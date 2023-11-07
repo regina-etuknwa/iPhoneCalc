@@ -31,7 +31,7 @@ function calcFunc() {
             break;
     }
 
-    inputField.innerHTML = currentValue;
+    setInputField();
 
     console.log("previous:" , previousValue);
     console.log("current:" , currentValue);
@@ -43,12 +43,27 @@ function removeHighlight(){
     });
 }
 
+function adjustFontSize() {
+    const originalFontSize = parseInt(getComputedStyle(inputField).fontSize);
+    
+    while (inputField.scrollWidth > inputField.clientWidth) {
+      originalFontSize--;
+      inputField.style.fontSize = originalFontSize + 'px';
+    }
+  }
+  
+function setInputField() {
+    let visibleValue = currentValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    inputField.innerHTML = visibleValue;
+    adjustFontSize();
+}
+
 allBtn.forEach(elementBtn => {
     elementBtn.addEventListener("click", () => {
         elementBtn.classList.add("hover");
         setTimeout(() => {
             elementBtn.classList.remove("hover");
-        }, 1000);
+        }, 200);
     })
 })
 
@@ -76,7 +91,7 @@ numberBtn.forEach(elementBtn => {
             currentValue = currentValue + numberValue;
         }
         
-        inputField.innerHTML = currentValue;
+        setInputField();
         currentState = "number";
 
         console.log(numberValue);
@@ -120,18 +135,18 @@ clearBtn.addEventListener("click", function () {
 
 percentBtn.addEventListener("click", () => {
     currentValue = currentValue / 100;
-    inputField.innerHTML = currentValue;
+    setInputField();
 })
 
 plusminusBtn.addEventListener("click", () => {
     currentValue = currentValue * (-1);
-    inputField.innerHTML = currentValue;
+    setInputField();
 })
 
 // decimalBtn.addEventListener("click", () => {
 //     if(!currentValue.includes(".")){
 //         currentValue += ".";
-//         inputField.innerHTML = currentValue;
+//         setInputField();
 //     } 
 
 // })
