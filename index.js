@@ -45,14 +45,23 @@ function removeHighlight(){
 
 function adjustFontSize() {
     let originalFontSize = parseInt(getComputedStyle(inputField).fontSize);
-    console.log("adjustFontSize()");
+    // let newFontSize = originalFontSize;
+
     console.log("inputField.scrollWidth:", inputField.scrollWidth);
     console.log("inputField.clientWidth", inputField.clientWidth);
-    while (inputField.scrollWidth > inputField.clientWidth) {
-      originalFontSize--;
-      inputField.style.fontSize = originalFontSize + 'px';
-      console.log(originalFontSize);
+
+    if (inputField.scrollWidth > inputField.clientWidth){
+        while (inputField.scrollWidth > inputField.clientWidth) {
+            originalFontSize--;
+            inputField.style.fontSize = originalFontSize + 'px';
+          }
+    } else {
+        inputField.style.fontSize = '100px';
     }
+    
+    console.log('final font size:', inputField.style.fontSize);
+    console.log('originalFontSize', originalFontSize);
+    // console.log('newFontSize', newFontSize);
   }
   
 function setInputField() {
@@ -90,7 +99,10 @@ numberBtn.forEach(elementBtn => {
         } else {
             if(currentValue.includes(".") && numberValue == "."){
                 return;
-            } 
+            }
+            //  else if (currentValue == 0 && numberValue == 0){
+            //     return;
+            // }
             currentValue = currentValue + numberValue;
         }
         
@@ -116,8 +128,6 @@ operatorBtn.forEach(elementBtn => {
 
         // inputValue = inputValue + operatorValue;
         // inputField.innerHTML = inputValue;
-
-
 
         console.log(operatorValue);
     })
