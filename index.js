@@ -44,11 +44,14 @@ function removeHighlight(){
 }
 
 function adjustFontSize() {
-    const originalFontSize = parseInt(getComputedStyle(inputField).fontSize);
-    
+    let originalFontSize = parseInt(getComputedStyle(inputField).fontSize);
+    console.log("adjustFontSize()");
+    console.log("inputField.scrollWidth:", inputField.scrollWidth);
+    console.log("inputField.clientWidth", inputField.clientWidth);
     while (inputField.scrollWidth > inputField.clientWidth) {
       originalFontSize--;
       inputField.style.fontSize = originalFontSize + 'px';
+      console.log(originalFontSize);
     }
   }
   
