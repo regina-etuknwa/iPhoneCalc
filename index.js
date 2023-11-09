@@ -45,7 +45,6 @@ function removeHighlight(){
 
 function adjustFontSize() {
     let originalFontSize = parseInt(getComputedStyle(inputField).fontSize);
-    // let newFontSize = originalFontSize;
 
     console.log("inputField.scrollWidth:", inputField.scrollWidth);
     console.log("inputField.clientWidth", inputField.clientWidth);
@@ -61,7 +60,6 @@ function adjustFontSize() {
     
     console.log('final font size:', inputField.style.fontSize);
     console.log('originalFontSize', originalFontSize);
-    // console.log('newFontSize', newFontSize);
   }
   
 function setInputField() {
@@ -83,7 +81,10 @@ numberBtn.forEach(elementBtn => {
     elementBtn.addEventListener("click", function () {
         removeHighlight();
         let numberValue = (elementBtn.innerHTML);
-    
+
+        if (currentValue == 0 && numberValue == 0){
+            return;
+        }
         if (currentState == "operator"){
             if(currentOperator == "equals"){
                 previousValue = 0;
@@ -99,11 +100,14 @@ numberBtn.forEach(elementBtn => {
         } else {
             if(currentValue.includes(".") && numberValue == "."){
                 return;
+            } 
+            if(currentValue == 0 && currentValue.includes(".")) {
+                currentValue = currentValue + numberValue;                 
+            }else if (currentValue == 0 ){
+                currentValue = numberValue;
+            } else {
+                currentValue = currentValue + numberValue;
             }
-            //  else if (currentValue == 0 && numberValue == 0){
-            //     return;
-            // }
-            currentValue = currentValue + numberValue;
         }
         
         setInputField();
@@ -144,6 +148,7 @@ clearBtn.addEventListener("click", function () {
     currentOperator = "plus";
     currentState = "operator";
     removeHighlight();
+    adjustFontSize();
 });
 
 percentBtn.addEventListener("click", () => {
