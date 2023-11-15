@@ -40,8 +40,53 @@ function calcFunc() {
     console.log("current:" , currentValue);
 }
 
+function calculateSine(){
+    const angleInRadians = (currentValue * Math.PI) / 180;
+    const sineValue = Math.sin(angleInRadians).toFixed(10);
+    currentValue = sineValue;
+}
+
+function calculateCos(){
+    const angleInRadians = (currentValue * Math.PI) / 180;
+    const cosValue = Math.cos(angleInRadians).toFixed(10);
+    currentValue = cosValue;
+}
+
+function calculateTan(){
+    const angleInRadians = (currentValue * Math.PI) / 180;
+    const tanValue = Math.tan(angleInRadians).toFixed(10);
+    currentValue = tanValue;
+}
+
+function calculateTanh() {
+    const ex = Math.exp(currentValue);
+    const emx = Math.exp(-currentValue);
+    currentValue = (ex - emx) / (ex + emx);
+  }
+
+
+function factorial(){
+    let result = 1;
+
+    for (let i = 1; i <= currentValue; i++) {
+      result *= i;
+    }
+    currentValue = result;
+}
+
+// fix rounding with sin,cos,tan
+// fix highlight on operators
+// pi and e should erase each other
+// pressing sci-operators should be like =
+
 function sciCalcFunc() {
     switch(currentOperator) {
+        case "log":
+            currentValue = Math.log(currentValue) / Math.log(10);
+            break;
+        case "ln":
+            currentValue = Math.log(currentValue);
+            break;
         case "sqr":
             currentValue = currentValue**2;
             break;
@@ -50,6 +95,37 @@ function sciCalcFunc() {
             break;
         case "e-pwr":
             currentValue = 2.718281828459045**currentValue;
+            break;
+        case "sqrt":
+            currentValue = currentValue**(1/2);
+            break;
+        case "cbrt":
+            currentValue = currentValue**(1/3);
+            break;
+        case "ten-pwr":
+            currentValue = 10**currentValue;
+            break;
+        case "factorial":
+            factorial();
+            break;
+        case "sin":
+            calculateSine();
+            break;
+        case "cos":
+            calculateCos();
+            break;
+        case "tan":
+            calculateTan();
+            break;
+        case "sinh":
+            currentValue = (Math.exp(currentValue) - Math.exp(-currentValue)) / 2;
+            break;
+        case "cosh":
+            currentValue = (Math.exp(currentValue) + Math.exp(-currentValue)) / 2;
+            break;
+        case "tanh":
+            calculateTanh();
+            break;
         default:
             break;
     }
@@ -107,6 +183,8 @@ numberBtn.forEach(elementBtn => {
 
         if(elementBtn.dataset.number == "pi"){
             numberValue = 3.14159265359;
+        } else if (elementBtn.dataset.number == "e"){
+            numberValue = 2.718281828459045;
         } else {
             numberValue = (elementBtn.innerHTML);
         }
@@ -160,9 +238,6 @@ operatorBtn.forEach(elementBtn => {
 
         let operatorValue = (elementBtn.dataset.operator);
         currentOperator = operatorValue;
-
-        // inputValue = inputValue + operatorValue;
-        // inputField.innerHTML = inputValue;
 
         console.log(operatorValue);
     })
