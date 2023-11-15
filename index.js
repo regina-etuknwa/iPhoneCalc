@@ -1,5 +1,6 @@
 const numberBtn = document.querySelectorAll(".numbers");
 const operatorBtn = document.querySelectorAll(".operators");
+const sciOperatorBtn = document.querySelectorAll(".sci-operators");
 const clearBtn = document.querySelector(".clear");
 const percentBtn = document.querySelector(".percent");
 const decimalBtn = document.querySelector(".decimal");
@@ -27,6 +28,8 @@ function calcFunc() {
         case "divide":
             currentValue = previousValue / currentValue;
             break;
+        case "pwr":
+            currentValue = previousValue**currentValue
         default:
             break;
     }
@@ -35,6 +38,23 @@ function calcFunc() {
 
     console.log("previous:" , previousValue);
     console.log("current:" , currentValue);
+}
+
+function sciCalcFunc() {
+    switch(currentOperator) {
+        case "sqr":
+            currentValue = currentValue**2;
+            break;
+        case "cube":
+            currentValue = currentValue**3;
+            break;
+        case "e-pwr":
+            currentValue = 2.718281828459045**currentValue;
+        default:
+            break;
+    }
+
+    setInputField();
 }
 
 function removeHighlight(){
@@ -63,7 +83,9 @@ function adjustFontSize() {
   }
   
 function setInputField() {
-    let visibleValue = currentValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // let visibleValue = currentValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    let visibleValue = currentValue.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g
+    , ",");
     inputField.innerHTML = visibleValue;
     adjustFontSize();
 }
@@ -80,7 +102,16 @@ allBtn.forEach(elementBtn => {
 numberBtn.forEach(elementBtn => {
     elementBtn.addEventListener("click", function () {
         removeHighlight();
-        let numberValue = (elementBtn.innerHTML);
+        
+        let numberValue;
+
+        if(elementBtn.dataset.number == "pi"){
+            numberValue = 3.14159265359;
+        } else {
+            numberValue = (elementBtn.innerHTML);
+        }
+
+        
 
         if (currentValue == 0 && numberValue == 0){
             return;
@@ -137,7 +168,15 @@ operatorBtn.forEach(elementBtn => {
     })
 });
 
+sciOperatorBtn.forEach(elementBtn => {
+    elementBtn.addEventListener("click", () => {
 
+        let operatorValue = (elementBtn.dataset.operator);
+        currentOperator = operatorValue;
+        sciCalcFunc();
+
+    })
+})
 
 
 clearBtn.addEventListener("click", function () {
